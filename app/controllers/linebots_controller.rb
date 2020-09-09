@@ -1,7 +1,7 @@
 class LinebotsController < ApplicationController
   require 'line/bot'
 
-  protect_form_forgery :expect => [:callback]
+  protect_from_forgery :expect => [:callback]
 
   def client
     @client ||= Line::Bot::Client.new { |config|
@@ -27,7 +27,7 @@ class LinebotsController < ApplicationController
         when Line::Bot::Event::Message::Text
           message = {
             type: 'text',
-            text: event.message["text"]
+            text: event.message['text']
         }
         client.reply_message(event['replyToken'], message)
         end
