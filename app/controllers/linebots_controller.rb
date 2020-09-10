@@ -1,7 +1,7 @@
 class LinebotsController < ApplicationController
   require 'line/bot'
 
-  protect_from_forgery :expect => [:callback]
+  protect_from_forgery :except => [:callback]
 
   def client
     @client ||= Line::Bot::Client.new { |config|
@@ -24,7 +24,7 @@ class LinebotsController < ApplicationController
       case event
       when Line::Bot::Event::Message
         case event.type
-        when Line::Bot::Event::Message::Text
+        when Line::Bot::Event::MessageType::Text
           message = {
             type: 'text',
             text: event.message['text']
@@ -33,6 +33,7 @@ class LinebotsController < ApplicationController
         end
       end
     }
+    
     head :ok
   end
 end
